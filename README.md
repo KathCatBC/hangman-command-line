@@ -10,7 +10,7 @@ From the command line type:
     
 You will be prompted to guess letters for the hidden word.
 
-Be careful you 5 wrong letters and the game is over.
+Be careful 5 wrong letters and the game is over.
 
 If you have no idea about node or npm packages, please try my other hangman game:
 
