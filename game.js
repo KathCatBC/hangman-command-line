@@ -1,51 +1,43 @@
-var inquirer = require('inquirer');
-var Student = require('./letter');
-var Clas = require('./word');
+var inquirer = require('inquirer')
+var Word = require('./Word.js');
 
-var newClass;
+var wordChoices = ["watermelon", "tangerine", "grapefruit", "strawberry", "blueberry", "cantaloupe"]
+var hangWord = wordChoices[(Math.floor(Math.random() * wordChoices.length))];
 
-inquirer.prompt([
-  {type: "input",
-    name: "letter",
-    message: "Pick a letter."},
-  
-]).then(function(data){
-	  // var students = [];
-   //    newClass = new Clas([], data.subject, data.capacity);
+var wordObject = new Word(hangWord);
+wordObject.makeAndPushLettersIntoWord();
+console.log("  "); // for spacing;
+console.log("Guess the fruit - 5 wrong letters and you lose!");
+console.log(wordObject.display());
 
-   //    askToAddStudent();
+function askLetter(){
+    inquirer.prompt([
+    {
+    type: "input",
+    name: "guess",
+    message: "What letter do you guess?"},
+    ]).then(function(data){
+    
+        console.log("  ");  // add some spacing to help with display
+        wordObject.updateLetter(data.guess);
+              
+        console.log(wordObject.display());
 
-   console.log(data.letter)
+        if (wordObject.wrong.length > 0) {
+            console.log("wrong letters: " + wordObject.wrong)
+            console.log(" ");  // for spacing
+        }
 
-});
+        if (wordObject.wrong.length == 5) {
+            console.log("You lost - the correct word was " + hangWord + ".")
+        } else {
+            if (wordObject.display().indexOf("_") != -1){
+                askLetter();
+            } else {
+                console.log("You Won!")
+            }
+        }
+    });
+}
 
-// function newStudent(){
-// 	inquirer.prompt([
-// 	  {type: "input",
-// 	    name: "sName",
-// 	    message: "What's your student's name?"}
-
-// 	]).then(function(data){
-// 	      var newStudent = new Student(data.sName);
-// 	      newClass.addStudent(newStudent);
-
-// 	      console.log(newClass);
-	      
-// 	      askToAddStudent();
-// 	});
-// }
-
-// function askToAddStudent(){
-// 	inquirer.prompt([
-// 	  {type: "input",
-// 	    name: "addStudents",
-// 	    message: "Do you want to add students to that class?"}
-
-// 	]).then(function(data){
-// 	      if (data.addStudents == 'yes'){
-// 	      	newStudent();
-// 	      }else{
-// 	      	console.log(newClass);
-// 	      }
-// 	});
-// }
+askLetter();
